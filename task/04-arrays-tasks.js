@@ -133,7 +133,7 @@ function getUpperCaseStrings(arr) {
  *    [ 'angular', 'react', 'ember' ] => [ 7, 5, 5 ]
  */
 function getStringsLength(arr) {
-   throw new Error('Not implemented');
+   return arr.map(x => x.length);
 }
 
 /**
@@ -177,7 +177,7 @@ function getHead(arr, n) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'b', 'c', 'd' ]
  */
 function getTail(arr, n) {
-   throw new Error('Not implemented');
+   return arr.slice(arr.length - n, arr.length);
 }
 
 
@@ -252,7 +252,7 @@ function getMovingSum(arr) {
  * [ "a" ] => []
  */
 function getSecondItems(arr) {
-   return arr.filter((x,y) => y%2 != 0 );
+   return arr.filter((x, y) => y % 2 != 0);
 }
 
 
@@ -271,7 +271,14 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-      throw new Error('Not implemented');
+   let resultArray = new Array();
+   arr.map(function (value, index) {
+      let _array = new Array(index + 1).fill(value);
+      resultArray.push(..._array);
+      return null;
+   });
+
+   return resultArray;
 }
 
 
@@ -289,7 +296,7 @@ function propagateItemsByPositionIndex(arr) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-   throw new Error('Not implemented');
+   return arr.sort((i,j) => j - i).splice(0,3);
 }
 
 
@@ -457,7 +464,8 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-   throw new Error('Not implemented');
+   let resultArray = new Array(end - start + 1).fill();
+   return resultArray.map((x, index) => index + start);
 }
 
 /**
@@ -472,7 +480,9 @@ function getIntervalArray(start, end) {
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
 function distinct(arr) {
-   throw new Error('Not implemented');
+   return arr.filter(function(element, index , mass){
+      return mass.indexOf(element) == index;
+   });
 }
 
 /**
