@@ -22,7 +22,7 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
 }
 
 /**
@@ -37,7 +37,7 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
 }
 
 
@@ -56,7 +56,15 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+   let year = date.getFullYear();
+
+   if(year % 4 != 0)
+      return false;
+   if(year % 100 != 0)
+      return true;
+   if(year % 400 != 0)
+      return false; 
+   return true;
 }
 
 
@@ -76,7 +84,19 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
+   let hours = endDate.getHours() - startDate.getHours();
+   if(hours < 10 ) hours = "0" + hours;
+   let minutes = endDate.getMinutes() - startDate.getMinutes();
+   if(minutes < 10 ) minutes = "0" + minutes;
+   let seconds = endDate.getSeconds() - startDate.getSeconds();
+   if(seconds < 10 ) seconds = "0" + seconds;
+   let milliseconds = endDate.getMilliseconds() - startDate.getMilliseconds();
+   if(milliseconds < 10 ) milliseconds = "00" + milliseconds;
+   else
+   if(milliseconds < 100 ) milliseconds = "0" + milliseconds;
+ 
+   return `${hours}:${minutes}:${seconds}.${milliseconds}`;
+
 }
 
 
@@ -94,7 +114,21 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+ 
+    let hours = (date.getHours() - 3) % 12;
+    let minutes = date.getMinutes();
+
+    
+    let angle2 = 360  * minutes / 60;
+    let angle1 = 360 * ( hours /12  ) + angle2/12;
+
+    let resultAngel =  Math.abs(angle1 - angle2);
+
+    if(resultAngel < 180)
+      return   Math.PI * resultAngel / 180;
+   else
+      return Math.PI * (360 - resultAngel) / 180;
+    
 }
 
 
