@@ -138,7 +138,38 @@ function isTriangle(a, b, c) {
  *  
  */
 function doRectanglesOverlap(rect1, rect2) {
-    throw new Error('Not implemented');
+    let dots = [
+        {x: rect2.top, y: rect2.left, cmp: rect1},
+        {x: rect2.top + rect2.height, y: rect2.left, cmp: rect1},
+        {x: rect2.top, y: rect2.left + rect2.width, cmp: rect1},
+        {x: rect2.top + rect2.height, y: rect2.left + rect2.width, cmp: rect1},
+
+        {x: rect1.top, y: rect1.left, cmp: rect2},
+        {x: rect1.top + rect1.height, y: rect1.left, cmp: rect2},
+        {x: rect1.top, y: rect1.left + rect1.width, cmp: rect2},
+        {x: rect1.top + rect1.height, y: rect1.left + rect1.width, cmp: rect2},
+    ];
+
+    for (let dotKey in dots)
+    {
+        let dot = dots[dotKey];
+
+        let isBetweenByHeight = between(dot.x, dot.cmp.top, dot.cmp.top + dot.cmp.height);
+        let isBetweenByWidth = between(dot.y, dot.cmp.left, dot.cmp.left + dot.cmp.width);
+        if (isBetweenByHeight && isBetweenByWidth)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function between(needle, a, b)
+{
+    let result = needle >= a && needle <= b;
+
+    return result;
 }
 
 
@@ -284,7 +315,12 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+    return ccn.toString().split('')
+    .reverse()
+    .map( (x) => parseInt(x) )
+    .map( (x,idx) => idx % 2 ? x * 2 : x )
+    .map( (x) => x > 9 ? (x % 10) + 1 : x )
+    .reduce( (accum, x) => accum += x ) % 10 === 0;
 }
 
 
@@ -407,26 +443,33 @@ function isPairOfBreckets(openBracket, closeBracket, bracketsConfig) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-    /*
-    let years = endDate.getFullYear() - startDate.getFullYear();
-    let days =  endDate.getDay() - startDate.getDay();
-    let hours = endDate.getHours() - startDate.getHours();
-    let minutes = endDate.getMinutes() - startDate.getMinutes();
-    let seconds = endDate.getSeconds() - startDate.getSeconds();
-    let miliseconds = endDate.getMilliseconds() - startDate.getMilliseconds();
+    let diffMilleseconds = Math.abs(endDate.getTime() - startDate);
 
-    console.log(minutes + " " + seconds + " " + miliseconds);
-
-    if(seconds > 45 && seconds < 90 )
-    return `a minute ago`;
-    else
-    if(seconds == 45 &&  miliseconds > 0)
-    return `a minute ago`;
-    else
-    return `a few seconds ago`;
-    */
-
-    throw new Error('Not implemented');
+    switch(true)
+    {
+        case diffMilleseconds <= 45 * 1000: // 45 sec
+            return 'a few seconds ago';
+        case diffMilleseconds <= 90 * 1000: // 90 sec
+            return 'a minute ago';
+        case diffMilleseconds <= 45 * 60 * 1000: // 45 min
+            return -Math.round(-diffMilleseconds / 60 / 1000) + ' minutes ago';
+        case diffMilleseconds <= 90 * 60 * 1000: // 90 min
+            return 'an hour ago';
+        case diffMilleseconds <= 22 * 60 * 60 * 1000: // 22 h
+            return -Math.round(-diffMilleseconds / 60 / 60 / 1000) + ' hours ago';
+        case diffMilleseconds <= 36 * 60 * 60 * 1000: // 36 h
+            return 'a day ago';
+        case diffMilleseconds <= 25 * 24 * 60 * 60 * 1000: // 25 d
+            return -Math.round(-diffMilleseconds / 24 / 60 / 60 / 1000) + ' days ago';
+        case diffMilleseconds <= 45 * 24 * 60 * 60 * 1000: // 45 d
+            return 'a month ago';
+        case diffMilleseconds <= 345 * 24 * 60 * 60 * 1000: // 345 d
+            return -Math.round(-diffMilleseconds / 30 / 24 / 60 / 60 / 1000) + ' months ago';
+        case diffMilleseconds <= 545 * 24 * 60 * 60 * 1000: // 545 d
+            return 'a year ago';
+        default:
+            return -Math.round(-diffMilleseconds / 365 / 24 / 60 / 60 / 1000) + ' years ago';
+    }
 }
 
 
@@ -482,7 +525,57 @@ function toNaryString(input, target) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-    throw new Error('Not implemented');
+    if (pathes.length == 1)
+    {
+        return pathes[0];
+    }
+    let result = '';
+    let firstPath = pathes.shift().split('');
+    
+    for (let symbolIndex in firstPath)
+    {
+        let symbol = firstPath[symbolIndex];
+
+        let cnt = 0;
+        for (let pathIndex in pathes)
+        {
+            let path = pathes[pathIndex];
+            if (isAtSymbol(path, symbolIndex, symbol))
+            {
+                cnt++;
+            }
+        }
+
+        if (cnt == pathes.length)
+        {
+            result = result + symbol;
+        }
+        else
+        {
+            return toDirectory(result);
+        }
+    }
+
+    return toDirectory(result);
+}
+
+function isAtSymbol(path, index, symbol) 
+{
+    return path.split('')[index] == symbol;
+}
+
+function toDirectory(str)
+{
+    if (str.length == 0)
+    {
+        return str;
+    }
+
+    let parts = str.toString().split('/');
+
+    parts.pop();
+
+    return parts.join('/') + '/';
 }
 
 

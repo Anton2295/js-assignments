@@ -314,7 +314,13 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-   throw new Error('Not implemented');
+   return arr.filter((v) => {
+      if (typeof(v) === 'string')
+      {
+         return false;
+      }
+      return v > 0;
+   }).length;
 }
 
 /** 
@@ -331,7 +337,17 @@ function getPositivesCount(arr) {
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
 function sortDigitNamesByNumericOrder(arr) {
-   throw new Error('Not implemented');
+   if (arr.length === 0)
+   {
+      return arr;
+   }
+   let numbers = [
+      'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'
+   ]
+
+   return arr.sort(function(a, b) {
+      return numbers.indexOf(a) - numbers.indexOf(b);
+   });
 }
 
 /** 
@@ -347,7 +363,9 @@ function sortDigitNamesByNumericOrder(arr) {
  *   [ 1, 10, 100, 1000 ]  => 1111
  */
 function getItemsSum(arr) {
-   throw new Error('Not implemented');
+   return arr.reduce((accumulator, currentValue) => { 
+      return accumulator + currentValue
+   }, 0);
 }
 
 /** 
@@ -362,8 +380,11 @@ function getItemsSum(arr) {
  *  [ -1, 'false', null, 0 ] => 2
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
+
 function getFalsyValuesCount(arr) {
-   throw new Error('Not implemented');
+   return arr.filter((v) => { 
+      return !v;
+   }).length;
 }
 
 /**
@@ -381,7 +402,9 @@ function getFalsyValuesCount(arr) {
  *    [ true, 0, 1, 'true' ], true => 1
  */
 function findAllOccurences(arr, item) {
-   throw new Error('Not implemented');
+   return arr.filter((v) => {
+      return v === item;
+   }).length;
 }
 
 /**
@@ -396,7 +419,7 @@ function findAllOccurences(arr, item) {
  *    ['rock', 'paper', 'scissors']     => 'rock,paper,scissors'
  */
 function toStringList(arr) {
-   throw new Error('Not implemented');
+   return arr.join(',');
 }
 
 

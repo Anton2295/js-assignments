@@ -18,7 +18,7 @@
  */
 function createCompassPoints() {
     throw new Error('Not implemented');
-    var sides = ['N','E','S','W'];  // use array of cardinal directions only!
+    var sides = ['N', 'E', 'S', 'W'];  // use array of cardinal directions only!
 }
 
 
@@ -137,13 +137,26 @@ function canDominoesMakeRow(dominoes) {
  * [ 1, 2, 4, 5]          => '1,2,4,5'
  */
 function extractRanges(nums) {
-    throw new Error('Not implemented');
+    let result = "";
+    let separator = "";
+    for (let i = 0; i < nums.length; i++) {
+        if(i == 0 || i == nums.length -1 || !(nums[i] == nums[i - 1] + 1 && nums[i] == nums[i + 1] - 1)){
+            if(i == nums.length - 1) separator = "";
+                else
+            if( i > nums.length - 2 ||( nums[i] == nums[i + 1] - 1 && nums[i+1] == nums[i + 2] - 1)) separator = "-";
+                else
+            separator = ",";
+            result += nums[i] + separator;
+        }
+    }
+
+    return result;
 }
 
 module.exports = {
-    createCompassPoints : createCompassPoints,
-    expandBraces : expandBraces,
-    getZigZagMatrix : getZigZagMatrix,
-    canDominoesMakeRow : canDominoesMakeRow,
-    extractRanges : extractRanges
+    createCompassPoints: createCompassPoints,
+    expandBraces: expandBraces,
+    getZigZagMatrix: getZigZagMatrix,
+    canDominoesMakeRow: canDominoesMakeRow,
+    extractRanges: extractRanges
 };
